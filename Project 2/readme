@@ -1,0 +1,15 @@
+Person is a class and stores name (first name only), age, sex (m or f), and relationship status (s single p partner).
+SinglePerson inherits from Person and has an additional attribute indicating if the individual is looking for a new
+partner (y or n). InRelationshipPerson inherits from Person and has an additional attribute indicating the partner’s
+name (first name only). SinglePerson and InRelationshipPerson should have their own toString methods.
+The constructor for DinnerTable should accept an ArrayList which lists potential persons to be invited to a dinner
+party. The constructor should throw a DinnerTableException if the number of single people on the list who are
+looking for a new partner is <=1. DinnerTable should have a toString method to print out the list of people on the
+list. The custom DinnerTableException should have a method getNumberSinglesLooking() so that an informative
+message can be supplied to the user.
+TestDinnerTable should allow the user to input the name of a guest data file which describes the list of potential
+dinner guests. The list should be read in and a DinnerTable object constructed, all within a suitable try-catch block.
+When a satisfactory list has been read in (the user should be allowed to make repeated selections to achieve this),
+the program should print the list of people on the console window. Guest data files must provide in order: first
+name, age in years, sex (m or f), and relationship status (s single p partner). The final attribute indicates if the
+individual is looking for a new partner (y or n) or indicates the partner’s name (first name only).
