@@ -1,0 +1,390 @@
+/* Name: Shaivan Bhagat
+   This project is all my own work.
+   I have not knowingly allowed others to copy my work. */
+
+import java.util.Scanner; 
+public class Project1_ShaivanBhagat {
+
+	//main method
+	public static void main(String[] args) {
+
+		//Create a Scanner Object
+		Scanner input = new Scanner(System.in);
+
+		//Initialize a variable i
+		int i = 0;
+
+		//Create a 2D Array of 3x3 matrix
+		char[][] matrix = new char [3][3];
+
+		//Create a list of legal words
+		String[] wordsList = {"abs","awe","amp","aft",",are","age","ago","add","age","pet", "eve","dog","pen","nib",
+				"pin","pan","and","ass","ban","bat","ben","bet","bat","bar","can","car","cat","dig","dug","den","dot",
+				"dam","dan","dub","dab","fan","fun","fit","fat","for","fin","got","get","gay","gun","irk","hat","hit",
+				"hot","ham","hop","hip","him","her","jam","jar","kit","ten","lap","lip","lay","low","man","mat",
+				"men","pot","pit","pat","pun","ran","run","rim","ray","rum","sun","sat","sit","say","tap","top",
+				"tip","van","vet","won","win","way","yam","zoo","zip","ape","pea","eat","ate","oat","tea","pep","pap"};
+
+		//Create a list of legal anagrams
+		String[] anagramList = {"act","add","aft","ape","amp","apt","bad","bar","bin","dab",
+				"cat","dam","dog","dad","eat","fat","god","mad","map","net","nib","pea","pay", "pot",
+				"ten","tea","top","yap"};
+
+
+		//Create a do-While Loop to go through the menu multiple times unless user input selects exit option
+		do {
+			System.out.println("[1] Enter characters \n"
+					+ "[2] Display Character Array  \n"
+					+ "[3] Columns that are legal words \n"
+					+ "[4] Columns that are palindromes \n"
+					+ "[5] Number of anagrams detected \n"
+					+ "[6] Exit");
+
+			//Prompt the user to select a number from the menu
+			System.out.println("Enter Choice [1-6]: ");
+			int tempInput = input.nextInt();
+			i = tempInput; //assigning i to user input
+
+
+			//Create a switch statement to give outputs for each menu option
+			switch(tempInput) {
+			case 1 : System.out.println();
+			enterChars(matrix); //method1 
+			System.out.println();
+			break;
+
+			case 2 : System.out.println();
+			displayArray (matrix); //method2
+			System.out.println();
+			break;
+
+			case 3 : System.out.println();
+			wordCount (matrix,wordsList); //method3
+			System.out.println();
+			break;
+
+			case 4: System.out.println(); 
+			palindromeCount(matrix, wordsList);  //method4
+			System.out.println();
+			break;
+
+			case 5: System.out.println();
+			anagramCount(matrix, wordsList, anagramList); //method5
+			System.out.println();
+			break;
+			}
+			//Blank print statements to print blank lines (spaces) above and below the printed output
+		} while (i != 6);
+		//If i (user input) is 6, the do while loop is not executed and terminates
+
+	}//End of main method loop
+
+	//Method 1: Create a Method to prompt user to enter 3 Strings
+	//Each word is made up of 3 characters
+	public static void enterChars(char[][] matrix) {
+
+		Scanner input = new Scanner(System.in);
+
+		System.out.println("Enter 3 strings to fill the 3x3 array");
+		System.out.println("Enter String 1: ");
+		String string1 = input.next();
+		System.out.println("Enter String 2: ");
+		String string2 = input.next();
+		System.out.println("Enter String 3: ");
+		String string3 = input.next();
+
+		//Use individual characters of the string in indices of the array matrix
+		for (int row=0; row < matrix.length; row++) {
+			for (int column = 0; column < matrix[row].length; column++) { 
+
+				if (row == 0)
+					matrix[row][column]= string1.charAt(column);
+				else if (row == 1)
+					matrix[row][column]= string2.charAt(column);
+				else  //if (row == 2)
+					matrix[row][column]= string3.charAt(column);
+			}
+		}
+
+	}
+
+	//Method 2: Create a method to display the 2D Array
+	public static void displayArray(char[][] matrix) {
+
+		//charcters are printed out individually
+		for (int row = 0; row < matrix.length; row++) {
+			for (int column = 0; column < matrix[row].length; column++) {
+				System.out.print(matrix[row][column]+ " ");
+			}
+			System.out.println();
+		}
+
+	}
+
+	//Method 3: Create method to count the number of legal words
+	public static void wordCount (char[][] matrix, String[] wordsList) {		
+
+		//Initialize a count variable to 0. Count stores the number of legal words found
+		int count = 0;
+
+		// Create a for loop to join the words together in each column
+		for (int column = 0; column < matrix[0].length; column++) { //reads values across the column
+			String word = "";
+			for (int row = 0; row < matrix.length; row++) {
+				word += matrix[row][column];
+
+				if (word.length() == 3) {
+
+					//Create for loop to check if each word is a legal word
+					// creating string eachWord which accesses the same values as the string wordList from the method
+					for (String eachWord : wordsList) {
+						if (word.equalsIgnoreCase(eachWord)) //compare 2 strings, ignoring case sensitivity - returns true if strings are equal
+							//if word is found in the list of strings created, count is incremented by 1
+							count+=1;	
+					}
+				}
+			}
+		}
+		System.out.println("Columns that are words are: " + count);
+	}
+
+	//Method 4: Create a method to count the number of valid palindromes
+	public static void palindromeCount(char[][] matrix,String[] wordsList) { 
+
+		//Invokes method putting the character in the columns into 3 strings
+		//columnWord1, columnWord2, columnWord3 methods invoked here
+		String word_1 = columnWord1(matrix);
+		String word_2 = columnWord2(matrix);
+		String word_3 = columnWord3(matrix);
+
+		//Initialize count to keep track of successful iterations 
+		int count = 0;
+
+		//Create a for loop to check whether the string is legal and a palindrome
+		//Check if the string word_1 is in the list of legal words and is a palindrome
+		//Method isPalindromeWord1 invoked here which checks if the string word_1 is a palindrome(boolean)
+		for (int i = 0; i < wordsList.length; i++) {
+			if (word_1.equalsIgnoreCase(wordsList[i]) && isPalindromeWord1(word_1) == true)
+				count+=1;
+		}
+
+		//Method isPalindromeWord2 invoked here which checks if the string word_2 is a palindrome(boolean)
+		for (int i = 0; i < wordsList.length; i++) {
+			if (word_2.equalsIgnoreCase(wordsList[i]) && isPalindromeWord2(word_2) == true)
+				count+=1;
+		}
+
+		//Method isPalindromeWord3 invoked here which checks if the string word_3 is a palindrome(boolean)
+		for (int i = 0; i < wordsList.length; i++) {
+			if (word_3.equalsIgnoreCase(wordsList[i]) && isPalindromeWord3(word_3) == true)
+				count+=1;
+		}
+
+		System.out.println("Number of palindromes: " + count);
+	}
+
+
+	//Method 5: Create anagramCount method to count the number of valid anagrams	
+	public static void anagramCount(char[][] matrix, String[] wordsList, String[] anagramList) {
+
+		//Invokes method putting the character in the columns into 3 strings
+		//columnWord1, columnWord2, columnWord3 methods invoked here
+		String word_1 = columnWord1(matrix);
+		String word_2 = columnWord2(matrix);
+		String word_3 = columnWord3(matrix);
+
+		//Initialize a count variable to keep track of successful iterations
+		int count = 0;
+
+		//Checks whether the the first string (word_1) is legal and an anagram from the list of words mentioned
+		for (int i = 0; i < wordsList.length; i++) {
+			for (int j = 0; j < anagramList.length; j++) {
+				if (word_1.equalsIgnoreCase(wordsList[i]) && word_1.equalsIgnoreCase(anagramList[j]))
+					count++;
+			}
+		}
+
+		//Checks whether the the second word (word_2) is legal and an anagram
+		for (int i = 0; i <wordsList.length; i++) {
+			for (int j = 0; j < anagramList.length; j++) {
+				if (word_2.equalsIgnoreCase(wordsList[i]) && word_2.equalsIgnoreCase(anagramList[j]))
+					count++;
+			}
+		}
+
+		//Checks whether the the third word (word_3) is legal and an anagram
+		for (int i = 0; i < wordsList.length; i++) {
+			for (int j = 0; j < anagramList.length; j++) {
+				if (word_3.equalsIgnoreCase(wordsList[i]) && word_3.equalsIgnoreCase(anagramList[j]))
+					count++;
+			}
+		}
+
+		System.out.println("Number of anagrams: " + count);
+	}
+
+
+
+	//Create a Method columnWord1 to put the characters in the first column into a string
+	public static String columnWord1(char[][] matrix) {
+
+		//Declare a char column array
+		char[] column_1 = new char[3];
+
+		//Declare a column count (-1 because of index)
+		//increment of c1 will made index 0 will is the first index in the array
+		int c1 = -1;
+
+		//Add the characters in the column to a single dimensional array
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				if (j == 0) { //index 0
+					c1++;
+					column_1[c1] = matrix[i][j];
+				}
+			}
+		}
+
+		//Converts the column char array into a string
+		String a = column_1[0] + "";
+		String b = column_1[1] + "";
+		String c = column_1[2] + "";
+
+		String word_1 = a + b + c;
+
+		return word_1;
+	}
+
+	//Create a Method columnWord2 to put the characters in the second column into a string
+	public static String columnWord2(char[][] matrix) {
+
+		//Declare a char column array
+
+		char[] column_2 = new char[3];
+
+		//Declares column count (-1 because of index) similar for column_1
+
+		int c2 = -1;
+
+		//Adds the chars in the column to a single dimensional array
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				if (j == 1) { // index 1 
+					c2++;
+					column_2[c2] = matrix[i][j];
+				}
+			}
+		}
+
+		//Converts the column char array into a string
+		String a = column_2[0] + "";
+		String b = column_2[1] + "";
+		String c = column_2[2] + "";
+
+		String word_2 = a + b + c;
+
+		return word_2;
+	}
+
+	//Create a Method columnWord3 to put the characters in the third column into a string
+	public static String columnWord3(char[][] matrix) {
+
+		//Declare a char column arrays
+		char[] column_3 = new char[3];
+
+		//Declares column counts (-1 because of index)
+		int c3 = -1;
+
+		//Adds the chars in the column to a single dimensional array
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				if (j == 2) {  //index 2, column 3
+					c3++;
+					column_3[c3] = matrix[i][j];
+				}
+			}
+		}
+
+		//Converts the column array into a string
+		String a = column_3[0] + "";
+		String b = column_3[1] + "";
+		String c = column_3[2] + "";
+
+		String word_3 = a + b + c;
+
+		return word_3;
+	}
+
+
+
+	//Checks whether the string word1 is a palindrome
+	public static boolean isPalindromeWord1(String word1) {
+		//Create a low and high variable to determine initial indexes
+		int low = 0;
+		int high = 2;
+
+		boolean isPalindrome = true;
+
+		//Create a while loop to iterate through the word as long as low < high
+		while (low < high) {
+			if (word1.charAt(low) != word1.charAt(high)) { //if statement for verify if character at index 0 is the same as index 2
+				isPalindrome = false; //if characters in index 0 and 2 are different, boolean value is false
+				break;
+			}			
+			low++;
+			high--;
+		}
+
+		return isPalindrome;
+	}
+
+	//Checks whether the string word2 is a palindrome
+	public static boolean isPalindromeWord2(String word2) {
+
+		//Create a low and high variable to determine initial indexes
+		int low = 0;
+		int high = 2;
+
+		boolean isPalindrome = true;
+
+		//Create a while loop to iterate through the word until low<high
+		while (low < high) {
+			if (word2.charAt(low) != word2.charAt(high)) {
+				isPalindrome = false;
+				break;
+			}			
+			low++;
+			high--;
+		}
+
+		return isPalindrome;
+	}
+
+	//Checks whether the string "word3" is a palindrome
+	public static boolean isPalindromeWord3(String word3) {
+
+		//Create a low and high variable to determine initial indexes
+		int low = 0;
+		int high = 2;
+
+		boolean isPalindrome = true;
+
+		//Create a while loop to iterate through the word until low<high
+		while (low < high) {
+			if (word3.charAt(low) != word3.charAt(high)) {
+				isPalindrome = false;
+				break;
+			}			
+			low++;
+			high--;
+		}
+
+		return isPalindrome;
+	}
+}
+
+/* Test input
+   pep eve ten
+   tea ear ape	
+ */
+
